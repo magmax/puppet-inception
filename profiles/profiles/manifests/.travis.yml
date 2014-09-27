@@ -1,0 +1,4 @@
+script:
+  - ./inception.sh
+  - puppet-lint manifests
+  - puppet-lint profiles
