@@ -1,6 +1,14 @@
 #!/bin/bash
 
-sudo apt-get install puppet puppet-el puppet-lint hiera bundler facter
+# required packages
+sudo apt-get install -y puppet puppet-lint facter
+# best efford packages
+sudo apt-get install -y hiera
+sudo apt-get install -y bundler
+sudo apt-get install -y facter
+sudo apt-get install -y puppet-el
+
+# install and exec librarian-puppet
 bundle install --path vendor/bundle
 bundle exec librarian-puppet install
 

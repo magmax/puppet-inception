@@ -1,4 +1,4 @@
-**Project status**: Under development, but it is already usable. Structure may change, but it should be quite easy to addapt it to the new one.
+**WARNING**: Under development, but it is already usable. Structure may change, but it should be quite easy to addapt it to the new one.
 
 # Puppet quick start project
 
