@@ -46,9 +46,6 @@ Any option you pass to `./inception.sh` will be passed to `puppet apply`. The mo
 - Profiles included, based on [Craig Dunn presentation].
 
 
-.. |travis| image:: https://travis-ci.org/magmax/puppet-inception.svg
-  :target: `Travis`_
-  :alt: Travis results
 
 [yaml]: http://www.yaml.org/
 [Puppet]: http://puppetlabs.com/
