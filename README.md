@@ -1,6 +1,6 @@
 # Puppet quick start project
 
-The idea is to start using puppet in 2 minutes.
+The idea is to start using [Puppet] in 2 minutes.
 
 ## Quick start
 
@@ -19,4 +19,12 @@ Boom! That's it.
 From now on, you should be able to manage everything just editing [yaml] files.
 
 
+## Why?
+
+Imagine you have your host perfectly puppetized but it gets broken and you need a replacement... But it is necessary to install all the base system to be able to run [Puppet].
+
+This small script and structure will allow you to set up your machine with just one command.
+
+
 [yaml]: http://www.yaml.org/
+[Puppet]: http://puppetlabs.com/
