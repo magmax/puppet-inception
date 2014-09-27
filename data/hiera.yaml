@@ -1,0 +1,12 @@
+---
+:backends: yaml
+
+:yaml:
+  :datadir: ./data
+
+:hierarchy:
+  - "node/%{::fqdn}"
+  - "virtual/%{::virtual}"
+  - "osfamily/%{osfamily}"
+  - common
+
