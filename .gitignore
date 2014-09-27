@@ -1,0 +1,8 @@
+modules/
+vendor/
+.bundle/
+.librarian/
+.tmp/
+Gemfile.lock
+Puppetfile.lock
+*~
