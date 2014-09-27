@@ -1,5 +1,6 @@
 modules/
 vendor/
+data/node/
 .bundle/
 .librarian/
 .tmp/

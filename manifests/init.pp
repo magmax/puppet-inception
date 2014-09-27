@@ -1,5 +1,1 @@
-
-
-node /n.*/ {
-  hiera_include('classes')
-}
+hiera_include('classes')
