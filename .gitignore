@@ -6,4 +6,5 @@ data/node/
 .tmp/
 Gemfile.lock
 Puppetfile.lock
+Puppetfile
 *~
