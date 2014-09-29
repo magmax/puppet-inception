@@ -4,6 +4,7 @@ before_install:
 script:
 # quite old puppet available in travis machines... It's a pitty...
 #  - ./inception.sh
-  - shellcheck inception.sh || true
+# shellcheck not available yet
+#  - shellcheck inception.sh || true
   - puppet-lint manifests
   - puppet-lint profiles
