@@ -37,18 +37,52 @@ function run_librarian {
 }
 
 function run_puppet {
-    sudo puppet apply manifests/init.pp --config manifests/puppet.conf $@
+    ARGS=$1
+    sudo puppet apply manifests/init.pp --config manifests/puppet.conf $1
+}
+
+function usage {
+    /bin/cat <<EOM
+This script applies puppet to current machine.
+
+Options:
+  -a PUPPET_ARGS    Arguments to be sent to puppet
+  -h                Show this help and exit
+  -s                Skip installations
+EOM
 }
 
 
+PUPPET_ARGS=
+SKIP_INSTALLATIONS=
+while getopts “ha:s” OPTION
+do
+     case $OPTION in
+         h)
+             usage
+             exit 1
+             ;;
+         a)
+             PUPPET_ARGS=$OPTARG
+             ;;
+         s)
+             SKIP_INSTALLATIONS=1
+             ;;
+         ?)
+             usage
+             exit
+             ;;
+     esac
+done
 
-
-install_required_packages
-install_optional_packages
-install_librarian
+if [[ -z $SKIP_INSTALLATIONS ]]; then
+    install_required_packages
+    install_optional_packages
+    install_librarian
+fi
 
 create_puppetfile_if_not_exist
 create_node_if_not_exist
 
 run_librarian
-run_puppet
+run_puppet "$PUPPET_ARGS"

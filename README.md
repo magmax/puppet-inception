@@ -29,9 +29,13 @@ Optionally, you can group several classes into profiles and just use the profile
 The easiest way to find them is by using `puppet module search`. I hightly recommend to use those in the [Example42 project], but you can add yor own ones.
 
 
-## Puppet options
+## Options
 
-Any option you pass to `./inception.sh` will be passed to `puppet apply`. The most important ones:
+- `-a <PUPPET_OPTIONS>` Passes PUPPET_OPTIONS to `puppet apply`
+- `-h` Shows the help
+- `-s` Skips the installations. Useful when you already have puppet and librarian installed.
+
+The most important puppet options to be used with `-a` are:
 
 - `-v`: Verbose mode
 - `--noop`: Do not apply puppet (be careful, because `apt` and `gem` will apply their changes)
