@@ -1,6 +1,9 @@
-before_install: gem install puppet-lint>=1.0.1
+before_install:
+  - gem install puppet-lint>=1.0.1
+  - sudo apt-get install shellcheck
 script:
 # quite old puppet available in travis machines... It's a pitty...
 #  - ./inception.sh
+  - shellcheck inception.sh || true
   - puppet-lint manifests
   - puppet-lint profiles

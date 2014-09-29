@@ -38,7 +38,7 @@ function run_librarian {
 
 function run_puppet {
     ARGS=$1
-    sudo puppet apply manifests/init.pp --config manifests/puppet.conf $1
+    sudo puppet apply manifests/init.pp --config manifests/puppet.conf $ARGS
 }
 
 function usage {
@@ -55,7 +55,7 @@ EOM
 
 PUPPET_ARGS=
 SKIP_INSTALLATIONS=
-while getopts “ha:s” OPTION
+while getopts "ha:s" OPTION
 do
      case $OPTION in
          h)
