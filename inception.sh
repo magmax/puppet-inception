@@ -90,12 +90,16 @@ function install_librarian {
 }
 
 function run_librarian {
-    librarian-puppet install
+    cd "$path"
+    bundle exec librarian-puppet install
+    cd - > /dev/null
 }
 
 function run_puppet {
     ARGS=$1
+    cd "$path"
     sudo puppet apply manifests/init.pp --config manifests/puppet.conf $ARGS
+    cd - > /dev/null
 }
 
 function migrate_file {
@@ -170,13 +174,19 @@ if [ ! -d "$path" ]; then
    mkdir -p "$path"
 fi
 
+echo "Migrating if necessary from previous versions..."
 migrate_0
 
+echo "Setting up..."
 create_data
 create_puppetfile
 create_manifests
 create_profiles
 create_node
 
+echo "Downloading modules..."
 run_librarian
+echo "Running puppet..."
 run_puppet "$puppet_args"
+
+echo "Done!"
