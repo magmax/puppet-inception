@@ -34,6 +34,7 @@ The easiest way to find them is by using `puppet module search`. I hightly recom
 - `-a <PUPPET_OPTIONS>` Passes PUPPET_OPTIONS to `puppet apply`
 - `-h` Shows the help
 - `-s` Skips the installations. Useful when you already have puppet and librarian installed.
+- `-p <PATH>` Selects the path to puppet files (the place where puppet-inception will deploy its files)
 
 The most important puppet options to be used with `-a` are:
 
