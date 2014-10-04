@@ -1,20 +1,62 @@
 #!/bin/bash
 
-function create_puppetfile_if_not_exist {
-    if [[ ! -f Puppetfile ]]; then
-        cp Puppetfile.template Puppetfile
+TMPL_PATH=templates
+
+puppet_args=
+skip_installations=
+path=puppet
+
+
+function create_puppetfile {
+    if [ ! -f "$path/Puppetfile" ]; then
+        cp "$TMPL_PATH/Puppetfile" "$path/Puppetfile"
     fi
 }
 
-function create_node_if_not_exist {
-    FILE=data/node/$(facter fqdn).yaml
+function create_node {
+    dir=$path/data/node
+    if [ ! -d "$dir" ]; then
+        mkdir -p "$dir"
+    fi
+
+    FILE=$dir/$(facter fqdn).yaml
     if [[ ! -f "$FILE" ]]; then
-/bin/cat <<EOM >$FILE
+/bin/cat <<EOM >"$FILE"
 ---
 classes:
   - logrotate
 EOM
     fi
+}
+
+function create_manifests {
+    dir=$TMPL_PATH/manifests
+    target=manifests
+
+    if [ ! -d "$target" ]; then
+        mkdir -p "$target"
+    fi
+
+    for filename in $(ls $dir); do
+        if [ ! -f "$target/$filename" ]; then
+            cp "$dir/$filename" "$target"
+        fi
+    done
+}
+
+function create_profiles {
+    dir=$TMPL_PATH/profiles/manifests
+    target=profiles/manifests
+
+    if [ ! -d "$target" ]; then
+        mkdir -p "$target"
+    fi
+
+    for filename in $(ls $dir); do
+        if [ ! -f "$target/$filename" ]; then
+            cp "$dir/$filename" "$target"
+        fi
+    done
 }
 
 function install_required_packages {
@@ -41,20 +83,45 @@ function run_puppet {
     sudo puppet apply manifests/init.pp --config manifests/puppet.conf $ARGS
 }
 
+function migrate_file {
+  file=$1
+
+  target=${path}/$(dirname $file )
+
+  if [ ! -f "$target" ] && [ -f "$file" ]; then
+      mv "$file" "$target"
+  fi
+}
+
+function migrate_dir {
+  dir=$1
+
+  target=${path}/$(dirname $dir )
+
+  if [ ! -d "$target" ] && [ -d "$dir" ]; then
+      mv "$dir" "$target"
+  fi
+}
+
+function migrate_0 {
+  migrate_file Puppetfile
+  migrate_dir manifests
+  migrate_dir profiles
+}
+
 function usage {
     /bin/cat <<EOM
 This script applies puppet to current machine.
 
 Options:
-  -a PUPPET_ARGS    Arguments to be sent to puppet
+  -a puppet_args    Arguments to be sent to puppet
   -h                Show this help and exit
   -s                Skip installations
+  -p <PATH>         Select the path to create the puppet structure
 EOM
 }
 
 
-PUPPET_ARGS=
-SKIP_INSTALLATIONS=
 while getopts "ha:s" OPTION
 do
      case $OPTION in
@@ -63,10 +130,13 @@ do
              exit 1
              ;;
          a)
-             PUPPET_ARGS=$OPTARG
+             puppet_args=$OPTARG
              ;;
          s)
-             SKIP_INSTALLATIONS=1
+             skip_installations=1
+             ;;
+         p)
+             path=$OPTARG
              ;;
          ?)
              usage
@@ -75,14 +145,22 @@ do
      esac
 done
 
-if [[ -z $SKIP_INSTALLATIONS ]]; then
+if [[ -z $skip_installations ]]; then
     install_required_packages
     install_optional_packages
     install_librarian
 fi
 
-create_puppetfile_if_not_exist
-create_node_if_not_exist
+if [ ! -d "$path" ]; then
+   mkdir -p "$path"
+fi
+
+migrate_0
+
+create_puppetfile
+create_manifests
+create_profiles
+create_node
 
 run_librarian
-run_puppet "$PUPPET_ARGS"
+run_puppet "$puppet_args"
