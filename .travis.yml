@@ -6,5 +6,5 @@ script:
 #  - ./inception.sh
 # shellcheck not available yet
 #  - shellcheck inception.sh || true
-  - puppet-lint manifests
-  - puppet-lint profiles
+  - puppet-lint templates/manifests
+  - puppet-lint templates/profiles
