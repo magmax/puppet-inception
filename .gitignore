@@ -1,6 +1,5 @@
-modules/
 vendor/
-data/node/
+puppet/
 .bundle/
 .librarian/
 .tmp/

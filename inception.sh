@@ -31,7 +31,7 @@ EOM
 
 function create_manifests {
     dir=$TMPL_PATH/manifests
-    target=manifests
+    target=$path/manifests
 
     if [ ! -d "$target" ]; then
         mkdir -p "$target"
@@ -46,7 +46,22 @@ function create_manifests {
 
 function create_profiles {
     dir=$TMPL_PATH/profiles/manifests
-    target=profiles/manifests
+    target=$path/profiles/manifests
+
+    if [ ! -d "$target" ]; then
+        mkdir -p "$target"
+    fi
+
+    for filename in $(ls $dir); do
+        if [ ! -f "$target/$filename" ]; then
+            cp "$dir/$filename" "$target"
+        fi
+    done
+}
+
+function create_data {
+    dir=$TMPL_PATH/data
+    target=$path/data
 
     if [ ! -d "$target" ]; then
         mkdir -p "$target"
@@ -75,7 +90,7 @@ function install_librarian {
 }
 
 function run_librarian {
-    bundle exec librarian-puppet install
+    librarian-puppet install
 }
 
 function run_puppet {
@@ -157,6 +172,7 @@ fi
 
 migrate_0
 
+create_data
 create_puppetfile
 create_manifests
 create_profiles
