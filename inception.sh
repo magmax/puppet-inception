@@ -46,7 +46,7 @@ function create_manifests {
 
 function create_profiles {
     dir=$TMPL_PATH/profiles/manifests
-    target=$path/profiles/manifests
+    target=$path/modules_own/profiles/manifests
 
     if [ ! -d "$target" ]; then
         mkdir -p "$target"
@@ -126,6 +126,8 @@ function migrate_0 {
   migrate_file Puppetfile
   migrate_dir manifests
   migrate_dir profiles
+
+  sed -i s/profiles/modules_own/g "$path/manifests/puppet.conf"
 }
 
 function usage {
