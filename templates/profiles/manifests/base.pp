@@ -2,6 +2,8 @@
 
 class profiles::base {
   include apt
+  include ntp
   include logrotate
-  include git
+
+  package{'htop': }
 }

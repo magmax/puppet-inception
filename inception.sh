@@ -127,7 +127,9 @@ function migrate_0 {
   migrate_dir manifests
   migrate_dir profiles
 
-  sed -i s/profiles/modules_own/g "$path/manifests/puppet.conf"
+  if [ -f "$path/manifests/puppet.conf" ]; then
+      sed -i s/profiles/modules_own/g "$path/manifests/puppet.conf"
+  fi
 }
 
 function usage {
